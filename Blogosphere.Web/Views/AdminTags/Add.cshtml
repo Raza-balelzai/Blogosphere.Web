@@ -1,0 +1,23 @@
+﻿@model Blogosphere.Web.Models.DTOs.AddTagRequest
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container  d-sm-inline-flex justify-content-start">
+        <h1>Add New Tag - Admin Functionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input class="form-control" type="text" asp-for="Name" id="name" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Display Name</label>
+            <input class="form-control" type="text" asp-for="DisplayName" id="displayName" />
+        </div>
+        <div class="mb-3">
+            <button class="btn btn-dark " type="submit">Add Tag</button>
+        </div>
+    </form>
+</div>
