@@ -40,6 +40,11 @@ namespace Blogosphere.Web.Repositories
             return await _context.BlogPosts.Include(x=>x.Tags).FirstOrDefaultAsync(x=>x.Id == id);
         }
 
+        public async Task<BlogPost?> GetBlogByUrlhandleAsync(string urlhandle)
+        {
+            return await _context.BlogPosts.Include(x=>x.Tags).FirstOrDefaultAsync(x=>x.UrlHandle== urlhandle);
+        }
+
         public async Task<BlogPost?> UpdateBlogAsync(BlogPost blogPost)
         {
           var existingBlog=  await _context.BlogPosts.Include(x=>x.Tags).FirstOrDefaultAsync(x=>x.Id==blogPost.Id);

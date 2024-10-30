@@ -7,9 +7,12 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Blogosphere.Web.styles.css" asp-append-version="true" />
+    @* Froala WYSIWYG Links *@
+    <link href='https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css' rel='stylesheet' type='text/css' />
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js'></script>
 </head>
 <body>
-    <header>
+    <header class="position-fixed w-100" style="z-index: 1030;">
         <div class="bg-dark text-center py-3">
             <h1 class="text-light">Blogosphere.Web</h1>
         </div>
@@ -43,7 +46,7 @@
     </header>
 
     <div>
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3" style="padding-top: 120px;">
             @RenderBody()
         </main>
     </div>
