@@ -2,6 +2,7 @@
 using Blogosphere.Web.Data;
 using Blogosphere.Web.Models.Domain;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace Blogosphere.Web.Repositories
 {
@@ -31,9 +32,33 @@ namespace Blogosphere.Web.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<Tag>> GetAllAsync()
+        public async Task<IEnumerable<Tag>> GetAllAsync(string? searchQuerry,string? sortBy, string? sortDirection)
         {
-           return await _context.Tags.ToListAsync();
+            var querry= _context.Tags.AsQueryable();
+            //filtering
+            if (string.IsNullOrEmpty(searchQuerry) == false)
+            {
+                querry= querry.Where(x=>x.Name.Contains(searchQuerry) || x.DisplayName.Contains(searchQuerry)  );
+            }
+            //sorting
+            if (string.IsNullOrEmpty(sortBy) == false)
+            {
+                var isDesc = string.Equals(sortDirection, "Desc", StringComparison.OrdinalIgnoreCase);
+                if (string.Equals(sortBy, "Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    querry = isDesc ? querry.OrderByDescending(x => x.Name) : querry.OrderBy(x => x.Name);
+                
+                }
+                if (string.Equals(sortBy, "DisplayName", StringComparison.OrdinalIgnoreCase))
+                {
+                    querry = isDesc ? querry.OrderByDescending(x => x.DisplayName) : querry.OrderBy(x => x.DisplayName);
+
+                }
+
+            }
+            //pagination
+            return await querry.ToListAsync();
+           //return await _context.Tags.ToListAsync();
         }
 
         public async Task<Tag?> GetByIdAsync(Guid id)

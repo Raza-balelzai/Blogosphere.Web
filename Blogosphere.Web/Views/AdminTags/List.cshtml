@@ -1,20 +1,58 @@
 ﻿@model List<Blogosphere.Web.Models.Domain.Tag>
 
-<div class="bg-secondary bg-opacity-10 py-2">
+<div class="bg-secondary bg-opacity-10  py-2">
     <div class="container  d-sm-inline-flex justify-content-start">
         <h1>Add New Tag - Admin Functionality</h1>
     </div>
 </div>
+@* Search functionality *@
+<form method="get" asp-controller="AdminTags" asp-action="List">
+<div class="mt-5 container">
+    <div class="row">
+        <div class="col col-md-3 d-flex">
+                <input type="text" class="form-control" name="searchQuerry" value="@ViewBag.SearchQuerry" />
+            <button type="submit" class="btn btn-warning ms-3">Search</button>
+        </div>
+    </div>
+</div>
+</form>
 
-<div class="container py-5">
+@* Showing all tags  *@
+<div class="container mt-3">
     @if (Model != null && Model.Any())
     {
         <table class="table table-striped table-active table-hover">
             <thead>
                 <tr>
                 <th>Tag Id</th>
-                <th>Tag Name</th>
-                 <th>Display Name</th>
+                <th>Tag Name
+                    @* for sorting *@
+                    <span>
+                        <span>
+                                <a class="btn btn-light" asp-controller="AdminTags" asp-action="List" asp-route-sortBy="Name"
+                                asp-route-sortDirection="Asc" asp-route-searchQuerry="@ViewBag.SearchQuerry"><i class="bi bi-arrow-bar-up"></i></a>
+                        </span>
+                            <span>
+                                <a class="btn btn-light" asp-controller="AdminTags" asp-action="List" asp-route-sortBy="Name"
+                                   asp-route-sortDirection="Desc" asp-route-searchQuerry="@ViewBag.SearchQuerry"><i class="bi bi-arrow-bar-down"></i></a>
+                            </span>
+                
+                     </span>
+                </th>
+                 <th>Display Name
+                    @*  For Sorting *@
+                        <span>
+                            <span>
+                                <a class="btn btn-light" asp-controller="AdminTags" asp-action="List" asp-route-sortBy="DisplayName"
+                                   asp-route-sortDirection="Asc" asp-route-searchQuerry="@ViewBag.SearchQuerry"><i class="bi bi-arrow-bar-up"></i></a>
+                            </span>
+                            <span>
+                                <a class="btn btn-light" asp-controller="AdminTags" asp-action="List" asp-route-sortBy="DisplayName"
+                                   asp-route-sortDirection="Desc" asp-route-searchQuerry="@ViewBag.SearchQuerry"><i class="bi bi-arrow-bar-down"></i></a>
+                            </span>
+
+                        </span>
+                 </th>
                  <th>Actions</th>
                 </tr>
             </thead>
@@ -25,7 +63,7 @@
                         <td>@tag.Id</td>
                         <td>@tag.Name</td>
                         <td>@tag.DisplayName</td>
-                        <td><a asp-area="" asp-action="Edit" asp-controller="AdminTags" asp-route-id="@tag.Id">Delete/Edit</a></td>
+                        <td><a asp-area="" asp-action="Edit" asp-controller="AdminTags" asp-route-id="@tag.Id"><i class="bi bi-pencil"></i><i class="bi bi-trash"></i></a></td>
                     </tr>
                 }
             </tbody>

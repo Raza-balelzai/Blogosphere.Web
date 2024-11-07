@@ -49,3 +49,36 @@ body {
 .blog-details-content img{
     max-width:100%;
 }
+/*deletebutton*/
+.delete-button {
+    position: relative;
+    transition: transform 0.2s ease;
+}
+
+.trash-icon {
+    display: inline-block;
+    transition: transform 0.1s ease;
+}
+
+.delete-button:hover .trash-icon {
+    animation: shake 0.5s ease-in-out;
+    animation-iteration-count: 1;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-3px);
+    }
+
+    50% {
+        transform: translateX(3px);
+    }
+
+    75% {
+        transform: translateX(-3px);
+    }
+}

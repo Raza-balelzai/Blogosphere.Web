@@ -2,11 +2,16 @@
 using Blogosphere.Web.Models.Domain;
 using Blogosphere.Web.Models.DTOs;
 using Blogosphere.Web.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Blogosphere.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class AdminTagsController : Controller
     {
         private readonly ITagRepository _TRepository;
@@ -14,16 +19,19 @@ namespace Blogosphere.Web.Controllers
         {
             _TRepository = TagRepo;
         }
-
         [HttpGet]
         public IActionResult Add()
         {
             return View();
-        } 
-        
+        }
         [HttpPost]
         public async Task<IActionResult> Add(AddTagRequest DTOtag)
         {
+            ValidateAddTagRequest(DTOtag); 
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             //Mapping AddTagRequest To the TagModel
             var tag = new Tag
             { 
@@ -33,14 +41,15 @@ namespace Blogosphere.Web.Controllers
             await _TRepository.AddAsync(tag);
             return RedirectToAction("List");
         }
-
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(string? searchQuerry,string? sortBy,string? sortDirection)
         {
-           var tags= await _TRepository.GetAllAsync();
+            ViewBag.SearchQuerry = searchQuerry;
+            ViewBag.SortBy = sortBy;
+            ViewBag.SortDirection = sortDirection;
+           var tags= await _TRepository.GetAllAsync(searchQuerry,sortBy,sortDirection);
             return View(tags);
         }
-        
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -57,7 +66,6 @@ namespace Blogosphere.Web.Controllers
             }
             return View(null);
         }
-
         [HttpPost]
         public async Task<IActionResult> Edit(EditTagRequest tag)
         {
@@ -79,6 +87,7 @@ namespace Blogosphere.Web.Controllers
             }
             return RedirectToAction("Edit",new { id = tag.Id });
         }
+        
         [HttpPost]
         public async Task<IActionResult> Delete(EditTagRequest tag) 
         {
@@ -96,5 +105,18 @@ namespace Blogosphere.Web.Controllers
             }
             return RedirectToAction("Edit", new { id = tag.Id });
         }
+        private void ValidateAddTagRequest(AddTagRequest tag)
+        {
+            if (tag.Name is not null && tag.DisplayName is not null)
+            {
+                if (tag.Name == tag.DisplayName) 
+                {
+                    ModelState.AddModelError("DisplayName", "Name cannot be the same as Display-Name "); 
+
+                }
+            }
+        }
+
+
     }
 }

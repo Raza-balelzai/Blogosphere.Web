@@ -8,7 +8,7 @@
 
 <div class="container py-5">
     @if(Model!=null && Model.Any()){
-    <table class="table table-hover table-active table-striped">
+   @*  <table class="table table-hover table-active table-striped">
         <thead>
             <tr>
                 <th>Blog Id</th>
@@ -31,11 +31,42 @@
                             }
                         </div>
                     </td>
-                    <td><a asp-area="" asp-action="Edit" asp-controller="AdminBlogPosts" asp-route-id="@blogPost.Id">Delete/Edit</a></td>
+                        <td><a asp-area="" asp-action="Edit" asp-controller="AdminBlogPosts" asp-route-id="@blogPost.Id"><i class="bi bi-pencil"></i><i class="bi bi-trash"></i></a></td>
                 </tr>
             }
         </tbody>
+        </table> *@
+        <table class="table table-hover table-striped table-bordered align-middle">
+            <thead class="">
+                <tr>
+                    <th scope="col">Blog ID</th>
+                    <th scope="col">Blog Heading</th>
+                    <th scope="col">Blog Tags</th>
+                    <th scope="col" class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var blogPost in Model)
+                {
+                    <tr>
+                        <td>@blogPost.Id</td>
+                        <td>@blogPost.Heading</td>
+                        <td>
+                            <div class="d-flex flex-wrap">
+                                @foreach (var tag in blogPost.Tags)
+                                {
+                                    <span class="badge bg-secondary me-1 mb-1">@tag.Name</span>
+                                }
+                            </div>
+                        </td>
+                        <td class="text-center">
+                        <a asp-area="" asp-action="Edit" asp-controller="AdminBlogPosts" asp-route-id="@blogPost.Id"><i class="bi bi-pencil"></i><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
         </table>
+
     }
     else
     {

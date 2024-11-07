@@ -2,11 +2,11 @@
 
 namespace Blogosphere.Web.Models.DTOs
 {
-    public class AddTagRequest
+    public class LoginViewModel
     {
         [Required]
-        public string Name { get; set; }
+        public string UserName { get; set; }
         [Required]
-        public string DisplayName { get; set; }
+        public string Password { get; set; }
     }
 }

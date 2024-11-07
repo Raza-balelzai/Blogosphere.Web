@@ -1,11 +1,14 @@
 ﻿using Blogosphere.Web.Models.Domain;
 using Blogosphere.Web.Models.DTOs;
 using Blogosphere.Web.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Blogosphere.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class AdminBlogPostsController : Controller
     {
         private readonly ITagRepository tagRepository;
